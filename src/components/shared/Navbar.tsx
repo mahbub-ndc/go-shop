@@ -1,6 +1,16 @@
+"use client";
+import { signOut } from "next-auth/react";
+import logo from "../../assets/images/logo.png";
+import Image from "next/image";
 import Link from "next/link";
 
-const Navbar = () => {
+const Navbar = ({ session }) => {
+  type sessionProps = {
+    name: string;
+    email: string;
+    image: string;
+  };
+
   return (
     <div className="navbar bg-base-100  border-b  w-[90%] mx-auto">
       <div className="navbar-start">
@@ -37,8 +47,8 @@ const Navbar = () => {
             </li>
           </ul>
         </div>
-        <Link href="/" className="btn btn-ghost text-xl">
-          NextAuth
+        <Link href="/" className="text-xl">
+          <Image src={logo} width={150} height={150} alt="logo" />
         </Link>
       </div>
       <div className="navbar-center hidden lg:flex">
@@ -48,10 +58,13 @@ const Navbar = () => {
           </li>
 
           <li>
-            <Link href="/about">About Us</Link>
+            <Link href="/shop">Shop</Link>
           </li>
           <li>
-            <Link href="/support">Support</Link>
+            <Link href="/about-us">About Us</Link>
+          </li>
+          <li>
+            <Link href="/contact-us">Contact Us</Link>
           </li>
           <li>
             <Link href="/dashboard">Dashboard</Link>
@@ -59,16 +72,23 @@ const Navbar = () => {
         </ul>
       </div>
       <div className="navbar-end">
-        <button className="btn btn-error btn-outline text-white rounded-full px-5">
-          Logout
-        </button>
-
-        <Link
-          href="/login"
-          className="btn btn-accent btn-outline text-white rounded-full px-5"
-        >
-          Login
-        </Link>
+        {session?.user ? (
+          <>
+            <button
+              onClick={() => signOut()}
+              className="btn btn-error btn-outline text-white rounded-full px-5"
+            >
+              Logout
+            </button>
+          </>
+        ) : (
+          <Link
+            href="/login"
+            className="btn btn-accent btn-outline text-white rounded-full px-5"
+          >
+            Login
+          </Link>
+        )}
       </div>
     </div>
   );
