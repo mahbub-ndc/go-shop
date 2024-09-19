@@ -3,6 +3,8 @@ import { signOut } from "next-auth/react";
 import logo from "../../assets/images/logo.png";
 import Image from "next/image";
 import Link from "next/link";
+import { ShoppingCart } from "lucide-react";
+import { useAppSelector } from "@/redux/hook";
 
 const Navbar = ({ session }) => {
   type sessionProps = {
@@ -10,6 +12,8 @@ const Navbar = ({ session }) => {
     email: string;
     image: string;
   };
+
+  const products = useAppSelector((store) => store.cart.products);
 
   return (
     <div className="navbar bg-base-100  border-b  w-[90%] mx-auto">
@@ -64,7 +68,7 @@ const Navbar = ({ session }) => {
             <Link href="/about-us">About Us</Link>
           </li>
           <li>
-            <Link href="/contact-us">Contact Us</Link>
+            <Link href="/cart">Cart</Link>
           </li>
           <li>
             <Link href="/dashboard">Dashboard</Link>
@@ -72,6 +76,17 @@ const Navbar = ({ session }) => {
         </ul>
       </div>
       <div className="navbar-end">
+        <div className="relative pr-5">
+          <Link
+            className="rounded-lg backdrop-blur-[2px] p-1 inline-block"
+            href={"/cart"}
+          >
+            <ShoppingCart size={24} />
+          </Link>
+          <span className="rounded-full absolute top-[-10px] left-[20px] bg-green-700 text-white text-center size-[25px]">
+            {products.length}
+          </span>
+        </div>
         {session?.user ? (
           <>
             <button
